@@ -16,38 +16,32 @@ local StatPatterns  = {
 
 -------------------------------------------------  Functions  -------------------------------------------------
 
-local function AddHeader(headers, stat)
-    if(not headers[stat]) then
-        headers[stat] = true;
-        table.insert(headers, stat);
+local function AddHeader(headers, header)
+    if(not headers[header]) then
+        headers[header] = true;
+        table.insert(headers, header);
     end
 end
 
-local function SetStat(gear, stat, value, headers)
-    AddHeader(headers, stat);
-    gear[stat] = value;
-end
-
-local function IncreaseStat(gear, stat, value, headers)
-    AddHeader(headers, stat);
-    gear[stat] = (gear[stat] or 0) + tonumber(value);
-end
-
-local function GetGearStats(ids)
-    local headers, gears, allLoaded = {}, {}, true;
+function ExportGearStats(ids, ret)
+    ret = ret or {};
+    ret.headers = ret.headers or {};
+    ret.gears = ret.gears or {};
 
     for _, id in ipairs(ids) do
         VanillaPlusTooltip:SetOwner(WorldFrame, "ANCHOR_NONE");
         VanillaPlusTooltip:ClearLines();
         VanillaPlusTooltip:SetHyperlink("item:" .. id .. ":0:0:0");
-        local itemName = GetItemInfo(id);
+        local gearName = GetItemInfo(id);
 
-        if(itemName == nil) then
-            allLoaded = false;
+        if(gearName == nil) then
+            DEFAULT_CHAT_FRAME:AddMessage("Gear " .. tostring(id) .. " is not loaded, please try again.");
         else
             local gear = {};
-            table.insert(gears, gear);
-            SetStat(gear, "名称", itemName, headers);
+            table.insert(ret.gears, gear);
+            
+            AddHeader(ret.headers, "装备");
+            gear["装备"] = gearName;
 
             for line = 1, VanillaPlusTooltip:NumLines() do
                 local widget = _G["VanillaPlusTooltipTextLeft" .. line];
@@ -58,7 +52,9 @@ local function GetGearStats(ids)
                         local _,_, value = string.find(text, pattern);
 
                         if(value ~= nil) then
-                            IncreaseStat(gear, stat, value, headers);
+                            AddHeader(ret.headers, stat);
+                            gear[stat] = (gear[stat] or 0) + tonumber(value);
+
                             break;
                         end
                     end
@@ -67,18 +63,17 @@ local function GetGearStats(ids)
         end
     end
 
-    return headers, gears, allLoaded;
+    return ret;
 end
 
-function ExportGearStats(ids)
-    local headers, gears, allLoaded = GetGearStats(ids);
+function ToCsv(headers, data)
     local csvText = table.concat(headers, ",");
 
-    for _, gear in ipairs(gears) do
+    for _, item in ipairs(data) do
         csvText =  csvText .. "\n";
 
         for index, header in ipairs(headers) do
-            local cell = gear[header] and tostring(gear[header]) or "";
+            local cell = item[header] and tostring(item[header]) or "";
 
             if(index == 1) then
                 csvText =  csvText .. cell;
@@ -86,10 +81,6 @@ function ExportGearStats(ids)
                 csvText =  csvText .. "," .. cell;
             end
         end
-    end
-
-    if(not allLoaded) then
-        DEFAULT_CHAT_FRAME:AddMessage("One or more gears are not loaded, please try again.");
     end
 
     return csvText;
