@@ -23,11 +23,11 @@ local function AddHeader(headers, header)
     end
 end
 
-function ExportGearStats(...)
+function GetGearStats(...)
     local headers, gears = {}, {};
 
     for _, ids in ipairs(arg) do
-        ids = type(data) == "table" and ids or {ids};
+        ids = type(ids) == "table" and ids or {ids};
 
         for _, id in ipairs(ids) do
             VanillaPlusTooltip:SetOwner(WorldFrame, "ANCHOR_NONE");
