@@ -116,7 +116,7 @@ end
 
 function ExportGearStats(...)
     local headers, gears = GetGearStats(unpack(arg));
-    return ToCsv(headers, data);
+    return ToCsv(headers, gears);
 end
 
 -------------------------------------------------  Gear List  -------------------------------------------------
