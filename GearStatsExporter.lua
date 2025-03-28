@@ -112,8 +112,6 @@ function GetGearStats(...)
                             if(value ~= nil) then
                                 AddHeader(headers, stat);
                                 gear[stat] = (gear[stat] or 0) + tonumber(value);
-    
-                                break;
                             end
                         end
                     end
