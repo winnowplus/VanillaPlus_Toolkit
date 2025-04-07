@@ -22,7 +22,7 @@ function InspectInventoryEnchant(unit, slot, expect)
     end
 end
 
-function DumpInventoryEnchant(slot)
+function DumpInventoryEnchant(unit, slot)
     local itemLink = GetInventoryItemLink(unit, slot);
 
     if(itemLink ~= nil) then
