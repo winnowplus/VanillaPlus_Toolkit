@@ -4,7 +4,7 @@ local GetInventoryItemLink  = GetInventoryItemLink;
 
 -----------------------------------------------  Declarations  ------------------------------------------------
 
-local ItemLinkPattern       = "|%a+|Hitem:([%d:]+))|h[%a+]|h|r";
+local ItemLinkPattern       = "|%a+|Hitem:(.+))|h[%a+]|h|r";
 
 -------------------------------------------------  Functions  -------------------------------------------------
 
