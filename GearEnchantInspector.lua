@@ -8,19 +8,26 @@ local EnchantPattern        = "Hitem:%d-:(%d-):%d-:%d-";
 
 -------------------------------------------------  Functions  -------------------------------------------------
 
-function InspectInventoryEnchant(unit, slot, enchantId)
+function InspectInventoryEnchant(unit, slot, expect)
     local itemLink = GetInventoryItemLink(unit, slot);
-    local _,_, value = string.find(itemLink, EnchantPattern); 
 
-    if(value ~= enchantId) then
-        DEFAULT_CHAT_FRAME:AddMessage("Unexpected EnchantId " .. tostring(value) .. " for " .. itemLink);
+    if(itemLink ~= nil) then
+        local _, _, actual = string.find(itemLink, EnchantPattern);
+
+        if(actual ~= expect) then
+            DEFAULT_CHAT_FRAME:AddMessage("Wrong Enchant for " .. itemLink .. " (" .. expect .. " expected, got " .. actual .. ")";
+        end
+    else
+        DEFAULT_CHAT_FRAME:AddMessage("Slot " .. slot .. " of " .. unit .. " is empty.");
     end
 end
 
 function DumpInventoryEnchant(slot)
-    local itemLink = GetInventoryItemLink("player", slot);
-    local _,_, value = string.find(itemLink, EnchantPattern); 
+    local itemLink = GetInventoryItemLink(unit, slot);
 
-    print(itemLink);
-    print(value);
+    if(itemLink ~= nil) then
+        local _, _, actual = string.find(itemLink, EnchantPattern);
+        DEFAULT_CHAT_FRAME:AddMessage(itemLink);
+        DEFAULT_CHAT_FRAME:AddMessage(actual);
+    end
 end
