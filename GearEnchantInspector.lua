@@ -15,7 +15,7 @@ function InspectInventoryEnchant(unit, slot, expect)
         local _, _, actual = string.find(itemLink, EnchantPattern);
 
         if(actual ~= expect) then
-            DEFAULT_CHAT_FRAME:AddMessage("Wrong Enchant for " .. itemLink .. " (" .. expect .. " expected, got " .. actual .. ")";
+            DEFAULT_CHAT_FRAME:AddMessage("Wrong Enchant for " .. itemLink .. " (" .. expect .. " expected, got " .. actual .. ")");
         end
     else
         DEFAULT_CHAT_FRAME:AddMessage("Slot " .. slot .. " of " .. unit .. " is empty.");
