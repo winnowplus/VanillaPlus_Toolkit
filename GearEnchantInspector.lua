@@ -14,7 +14,7 @@ function InspectInventoryEnchant(unit, slot, expect)
     if(itemLink ~= nil) then
         local _, _, actual = string.find(itemLink, EnchantPattern);
 
-        if(actual ~= expect) then
+        if(actual ~= tostring(expect)) then
             DEFAULT_CHAT_FRAME:AddMessage("Wrong Enchant for " .. itemLink .. " (" .. expect .. " expected, got " .. actual .. ")");
         end
     else
